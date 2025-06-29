@@ -7,8 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'PHPMailer' => $vendorDir . '/phpmailer/phpmailer/class.phpmailer.php',
-    'POP3' => $vendorDir . '/phpmailer/phpmailer/class.pop3.php',
-    'SMTP' => $vendorDir . '/phpmailer/phpmailer/class.smtp.php',
-    'phpmailerException' => $vendorDir . '/phpmailer/phpmailer/class.phpmailer.php',
 );
