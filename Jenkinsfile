@@ -3,10 +3,10 @@ pipeline {
     
     environment {
         // Configuración de VMs y repositorio
-        VM_STAGING_IP = '192.168.72.128'
+        VM_STAGING_IP = '192.168.72.129'
         STAGING_USER = 'clindata'
         STAGING_PATH = '/var/www/html/clindata'
-        GITHUB_REPO = 'https://github.com/mcampos08/clindata-app-prueba.git'
+        GITHUB_REPO = 'https://github.com/mcampos08/clindata-app.git'
         
         // Configuración de SonarQube (solo servidor, proyecto definido en sonar-project.properties)
         SONARQUBE_SERVER = 'SonarQube-Local'
