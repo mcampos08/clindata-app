@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        dependencyCheck 'OWASP-Dependency-Check'
-    }
-
     environment {
         GITHUB_REPO = 'https://github.com/mcampos08/clindata-app.git'
     }
@@ -19,9 +15,9 @@ pipeline {
 
         stage('📦 Análisis SCA - OWASP Dependency Check') {
             steps {
-                echo '=== ANALIZANDO src/ CON OWASP (sin conflictos) ==='
+                echo '=== ANALIZANDO src/ CON OWASP (uso correcto de tool) ==='
                 script {
-                    def dcHome = tool name: 'OWASP-Dependency-Check', type: 'dependencyCheck'
+                    def dcHome = tool name: 'OWASP-Dependency-Check', type: 'org.jenkinsci.plugins.DependencyCheck.tools.DependencyCheckInstallation'
                     sh """
                         mkdir -p reports/dependency-check
 
