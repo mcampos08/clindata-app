@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        dependencyCheck 'OWASP-Dependency-Check'
+    }
+
     environment {
         GITHUB_REPO = 'https://github.com/mcampos08/clindata-app.git'
     }
@@ -15,43 +19,40 @@ pipeline {
 
         stage('📦 Análisis SCA - OWASP Dependency Check') {
             steps {
-                echo '=== ANALIZANDO src/ CON OWASP ==='
-                sh '''
-                    mkdir -p reports/dependency-check
+                echo '=== ANALIZANDO src/ CON OWASP (sin conflictos) ==='
+                script {
+                    def dcHome = tool name: 'OWASP-Dependency-Check', type: 'dependencyCheck'
+                    sh """
+                        mkdir -p reports/dependency-check
 
-                    /opt/dependency-check/bin/dependency-check.sh \
-                      --project "clindata-app-src" \
-                      --scan src \
-                      --format HTML \
-                      --out reports/dependency-check \
-                      --enableRetired \
-                      --log reports/dependency-check/owasp-sca.log
-		      --data /var/owasp-data
+                        ${dcHome}/bin/dependency-check.sh \
+                          --project "clindata-app-src" \
+                          --scan src \
+                          --format HTML \
+                          --out reports/dependency-check \
+                          --enableRetired \
+                          --data ${WORKSPACE}/.dependency-check-data \
+                          --log reports/dependency-check/owasp-sca.log
 
-                    echo "✅ Reporte generado en reports/dependency-check"
-                '''
+                        echo "✅ Reporte generado en reports/dependency-check"
+                    """
+                }
             }
         }
     }
 
     post {
         always {
-            echo '''
-            =========================================
-            RESUMEN DE ANÁLISIS CON DEPENDENCY-CHECK
-            =========================================
-            ✅ Reporte generado: revisar resultados
-            '''
-
+            echo '📄 ARCHIVANDO REPORTE'
             archiveArtifacts artifacts: 'reports/dependency-check/dependency-check-report.html', onlyIfSuccessful: true
         }
 
         success {
-            echo '🎉 ANÁLISIS COMPLETADO EXITOSAMENTE'
+            echo '🎉 ANÁLISIS DE DEPENDENCIAS COMPLETADO CON ÉXITO'
         }
 
         failure {
-            echo '❌ ERROR DURANTE EL ANÁLISIS - REVISAR LOGS'
+            echo '❌ FALLÓ EL ANÁLISIS DE DEPENDENCIAS - VERIFICAR LOGS'
         }
     }
 }
