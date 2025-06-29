@@ -24,7 +24,7 @@ pipeline {
 
                         ${dcHome}/bin/dependency-check.sh \
                           --project "clindata-app-src" \
-                          --scan src/composer.lock \
+                          --scan src \
                           --format HTML \
                           --format JSON \
                           --out reports/dependency-check \
