@@ -38,10 +38,19 @@ pipeline {
     }
 
     post {
-        always {
-            echo '📄 ARCHIVANDO REPORTE'
-            archiveArtifacts artifacts: 'reports/dependency-check/dependency-check-report.html', onlyIfSuccessful: true
-        }
+    	always {
+    	    archiveArtifacts artifacts: 'reports/dependency-check/dependency-check-report.html', onlyIfSuccessful: true
+
+            publishHTML([
+            	reportName: 'Reporte OWASP Dependency-Check',
+            	reportDir: 'reports/dependency-check',
+            	reportFiles: 'dependency-check-report.html',
+            	keepAll: true,
+            	allowMissing: false,
+            	alwaysLinkToLastBuild: true
+            ])
+    	}
+
 
         success {
             echo '🎉 ANÁLISIS DE DEPENDENCIAS COMPLETADO CON ÉXITO'
