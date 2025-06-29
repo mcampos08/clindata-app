@@ -26,6 +26,7 @@ pipeline {
                       --out reports/dependency-check \
                       --enableRetired \
                       --log reports/dependency-check/owasp-sca.log
+		      --data /var/owasp-data
 
                     echo "✅ Reporte generado en reports/dependency-check"
                 '''
